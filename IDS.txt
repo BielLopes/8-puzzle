@@ -1,0 +1,38 @@
+def IDS(inicial, lista):
+	
+	frontier = []
+	goal_state = None
+
+	if test_goal(inicial):
+		return 0, inicial, frontier
+
+	deep = 1
+
+	while True:
+		inicial.cor = 1
+		frontier.append(inicial)
+
+		while frontier != []:
+
+			node = frontier[0]			
+			childs = node.index
+			for child in childs:
+
+				if (lista[child[2]].cor == 0) and ((node.deep < deep) or test_goal(lista[child[2]])) and (deep <= 31):
+					lista[child[2]].deep = node.deep + 1
+					lista[child[2]].move = child
+					if not test_goal(lista[child[2]]):
+						lista[child[2]].cor = 1
+						bisect.insort(frontier, lista[child[2]])
+					else:
+						goal_state = lista[child[2]]
+						print("To aqui!")
+						return deep, goal_state, frontier
+
+			print(node.state)
+			node.cor = 2
+			frontier.remove(node)
+
+		frontier = []
+		resetar_lista(lista)
+		deep = deep + 1
